@@ -1,0 +1,8 @@
+steps:
+- task: DownloadPipelineArtifact@2
+  displayName: Download Build Artifacts
+  inputs:
+    buildType: current
+    downloadType: single
+    downloadPath: '$(System.ArtifactsDirectory)'
+    artifactName: Function

@@ -1,0 +1,14 @@
+steps:
+- task: MSBuild@1
+  displayName: Build - $(buildConfiguration)
+  inputs:
+    configuration: $(buildConfiguration)
+    solution: AzFunction.sln
+    clean: true
+    msbuildArguments: /bl:"$(Build.SourcesDirectory)/BuildLog/build.binlog"
+
+- task: PublishPipelineArtifact@1
+  displayName: Publish BinLog
+  inputs:
+    path: $(Build.SourcesDirectory)/BuildLog
+    artifact: BuildLog

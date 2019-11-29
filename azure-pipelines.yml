@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+      - '*'
+stages:
+  - stage: Build
+    jobs:
+      - job: Build_Linux
+        pool:
+          vmImage: ubuntu-18.04
+        variables:
+          buildConfiguration: Release
+        steps:
+          - template: .azure-pipelines/restore-packages.yml
+          - template: .azure-pipelines/build.yml
+          - template: .azure-pipelines/test.yml
+          - template: .azure-pipelines/publish.yml
+  - stage: Deploy
+    jobs:
+      - job: Deploy_Fx
+        pool:
+          vmImage: ubuntu-18.04
+        variables:
+          azureSubscription: LoLFxConnection
+          appName: LolFx
+        steps:
+          - template: .azure-pipelines/download-artifacts.yml
+          - template: .azure-pipelines/deploy.yml
